@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<openerp>
+	<data>
+		<record model="ir.actions.act_window" id="action_sample_one">
+			<field name="name">Sample One </field>
+			<field name="res_model">sample.one</field>
+			<field name="view_type">form</field>					
+		</record>
+		
+		<menuitem id="root_menu_sample_one" 
+			name="Sample One Root"/>
+				
+        <menuitem id="menu_sample_one" 
+			name="Sample One" 
+			parent="root_menu_sample_one"
+			sequence="10"
+			/>
+			
+		<menuitem id="menu_sample_one_ext" 
+			name="Sample One" 
+			parent="menu_sample_one"
+			sequence="20"			
+			action="action_sample_one" />
+	 </data>
+</openerp>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<openerp>
+	<data>
+		 <record model="ir.ui.view" id="sample_one_form_view">
+				<field name="name">Sample One Form</field>
+				<field name="model">sample.one</field>
+				<field name="arch" type="xml">
+					<form string="Sample One">
+						<group>
+							<field name="name"/>
+							<field name="last_name"/>							
+						</group>
+					</form>
+				</field>
+		</record>
+	 </data>
+</openerp>
