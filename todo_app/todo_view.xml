@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <openerp>
+        <data>
+		<!--
+		Esto agregará un registro al modelo ir.ui.view con el identificador view_form_todo_task. 
+		Para el modelo la vista es todo.task y nombrada To-do Task Form. 
+		El nombre es solo para información, no tiene que ser único, pero debe permitir identificar fácilmente a que registro se refiere.
+		El atributo más importante es arch, que contiene la definición de la vista. 
+			Aquí decimos que es un formulario, y que contiene tres campos, y que decidimos hacer al campo active de solo lectura.
+		-->
+			<record    id="view_form_todo_task" model="ir.ui.view">
+				<field name="name">To-do Task Form</field>
+				<field name="model">todo.task</field>
+				<field name="arch" type="xml">
+					<form string="To-do Task">
+						<header>
+							<!-- 
+							Los atributos básicos para un botón son: 
+								string con el texto que se muestra en el botón, 
+								type que hace referencia al tipo de acción que ejecuta, y
+								 name que es el identificador para esa acción. 
+								 El atributo class puede aplicar estilos CSS, como un HTML común
+							-->
+							<button name="do_toggle_done" type="object" string="Toggle Done" class="oe_highlight" />
+							<button name="do_clear_done" type="object" string="Clear All Done" />
+						</header>
+						<sheet>
+							<!--
+							La etiqueta <group> permite organizar el contenido del formulario. 
+							Colocando los elementos <group> dentro de un elemento <group> crea una disposición de dos columnas
+							 dentro del grupo externo.
+							-->
+							<group name="group_top">
+								<group name="group_left">
+									<field name="name"/>
+								</group>
+								<group name="group_right">
+									<field name="is_done"/>
+									<field name="active" readonly="1"/>
+								</group>
+							</group>
+						</sheet>
+					</form>
+				</field>
+			</record>
+		
+            <!-- El elemento <act_window> define una Acción de Ventana del lado del cliente para abrir el modelo todo.task
+			  con las vistas de árbol y formulario habilitadas, en ese orden. 
+			 -->
+            <act_window
+                id="action_todo_task"
+                name="To-do Task"
+                res_model="todo.task"
+                view_mode="tree,form"
+            />
+            
+            <!-- El elemento <menuitem> define un ítem de menú bajo el menú Mensajería (identificado por mail.mail_feeds),
+             llamando a la acción action_todo_task, que fue definida anteriormente. 
+             el atributo sequence nos deja fijar el orden de las opciones del menú. -->
+            <menuitem
+                id="menu_todo_task"
+                name="To-Do Tasks"
+                parent="mail.mail_feeds"
+                sequence="20"
+                action="action_todo_task"
+            />         
+               
+            <!--
+				Cuando un modelo se visualiza como una lista, se esta usando una vista <tree>
+			-->
+            <record id="view_tree_todo_task" model="ir.ui.view">
+				<field name="name">To-do Task Tree</field>
+				<field name="model">todo.task</field>
+				<field name="arch" type="xml">					
+					<!--
+						Hemos definido una lista con solo dos columnas, name y is_done. 
+						También agregamos un toque extra: las líneas para las tareas finalizadas (is_done==True)
+						 son mostradas en color gris
+					-->
+					<tree colors="gray:is_done==True">
+						<field name="name"/>
+						<field name="is_done"/>
+					</tree>
+				</field>
+			</record>
+			
+			<!--En la parte superior derecha de la lista Odoo muestra una campo de búsqueda. 
+				Los campos de búsqueda predefinidos y los filtros disponibles pueden ser predeterminados por una vista <search>
+			-->
+			<record id="view_filter_todo_task" model="ir.ui.view">
+				<field name="name">To-do Task Filter</field>
+				<field name="model">todo.task</field>
+				<field name="arch" type="xml">
+					<!--
+					Los elementos <field> definen campos que también son buscados cuando se escribe en el campo de búsqueda. 
+					Los elementos <filter> agregan condiciones predefinidas de filtro, usando la sintaxis de dominio 
+					que puede ser seleccionada por el usuario
+					-->
+					<search>
+						<field name="name"/>
+						<filter string="Not Done" domain="[('is_done','=',False)]"/>
+						<filter string="Done" domain="[('is_done','!=',False)]"/>
+					</search>
+				</field>
+			</record>
+        </data>
+    </openerp>
